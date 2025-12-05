@@ -2,17 +2,19 @@
   import Dashboard from "./dashboard.svelte";
   import Uploaded from "./uploaded.svelte";
   import Admin from "./admin.svelte";
+  import Login from "./login.svelte";
 
-  let activePage = "uploaded"; 
+  let activePage = "login"; // نبدأ بصفحة تسجيل الدخول
   let isAdmin = false;
 
-  // استدعِ هذه الدالة بعد ما المستخدم يدخل البيانات
   function login(username, password) {
-    if (username === "maryam" && password === "11") {
+    if (username === "maryam@gmail.com" && password === "111111") {
       isAdmin = true;
     } else {
       isAdmin = false;
     }
+    // بعد تسجيل الدخول نذهب لصفحة Uploaded
+    activePage = "uploaded";
   }
 
   function openUpload(e) {
@@ -35,7 +37,7 @@
   function logout(e) {
     e.preventDefault();
     isAdmin = false;
-    activePage = "uploaded";
+    activePage = "login"; // رجوع لصفحة تسجيل الدخول
   }
 </script>
 
@@ -72,7 +74,9 @@
       </ul>
     </nav>
 
-    {#if activePage === "dashboard"}
+    {#if activePage === "login"}
+      <Login on:login={event => login(event.detail.username, event.detail.password)} />
+    {:else if activePage === "dashboard"}
       <Dashboard/>
     {:else if activePage === "uploaded"}
       <Uploaded/>
