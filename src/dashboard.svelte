@@ -4,16 +4,7 @@
 
 
 <main>
-  <nav class="navbar fixed top-0 left-0 w-full z-50 bg-black/20 backdrop-blur-md text-white px-10 py-4 flex justify-between items-center border-b-2 border-gray-400">
-    <div class="text-2xl font-bold">Project</div>
 
-    <ul class="flex gap-8 text-lg">
-      <li><a href="#home" class="hover:text-gray-300">Upload Image</a></li>
-      <li><a href="#home" class="hover:text-gray-300">Dashboard</a></li>
-      <li><a href="#home" class="hover:text-gray-300">logout</a></li>
-
-  </ul>
-  </nav>
   <div class="flex flex-col justify-center items-center gap-3 mt-30">
     <div class="porfile flex justify-center items-center bg-white w-250 p-10">
       <div class="flex-1 flex flex-col justify-center items-center gap-5 w-120">

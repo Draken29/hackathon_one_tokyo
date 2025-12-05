@@ -74,15 +74,6 @@
 
 <main id="main-container" class="w-screen h-screen" >
 
-     <nav id="nav-container" class="navbar fixed top-0 left-0 w-full z-50  backdrop-blur-md text-white px-10 py-4 flex justify-between items-center">
-    <div class="text-2xl font-bold ">Tokyo</div>
-
-    <ul class="flex gap-8 text-lg">
-      <li><a href="#home" class="hover:text-gray-300">Upload Image</a></li>
-      <li><a href="#home" class="hover:text-gray-300">Dashboard</a></li>
-      <li><a href="#home" class="hover:text-gray-300">logout</a></li>
-  </ul>
-  </nav>
     
 
     <div

@@ -1,0 +1,253 @@
+
+  /* 1. متغيرات الألوان والتصميم الأساسي */
+  :root {
+    --bg-main: #191919; /* خلفية أعمق */
+    --bg-surface: #262626; /* خلفية العناصر الرئيسية */
+    --bg-highlight: #333333; /* لتمييز الصفوف/حقول الإدخال */
+    --text-primary: #f0f0f0;
+    --text-secondary: #aaaaaa;
+    
+    --color-accent: #00bcd4; /* أزرق سماوي/تركوازي (Accent) */
+    --color-detail: #8bc34a; /* أخضر لزر Details */
+    --color-delete: #ff5252; /* أحمر للحذف */
+    --color-edit: #ffeb3b; /* أصفر للتعديل */
+
+    --shadow-dark: rgba(0, 0, 0, 0.6);
+    --shadow-light: rgba(50, 50, 50, 0.15);
+  }
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+font-family:
+    "Bradley Hand",        /* متوفر على بعض أنظمة macOS/iOS */
+    "Segoe Print",         /* Windows */
+    "Lucida Handwriting",  /* Windows قديم */
+    "Apple Chancery",      /* macOS */
+    "Comic Sans MS",       /* Windows/macOS */
+    cursive;  }  /* تطبيق الألوان الأساسية */
+  .user-management-panel {
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    padding: 40px;
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* العناوين والخطوط */
+  h1, h2, h3, h4 { color: var(--text-primary); }
+  h1 { 
+    font-weight: 300; 
+    font-family:
+    "Bradley Hand",        /* متوفر على بعض أنظمة macOS/iOS */
+    "Segoe Print",         /* Windows */
+    "Lucida Handwriting",  /* Windows قديم */
+    "Apple Chancery",      /* macOS */
+    "Comic Sans MS",       /* Windows/macOS */
+    cursive;  letter-spacing: 1.5px; }
+
+  /* 2. رأس الصفحة والأزرار */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--bg-highlight);
+  }
+
+  .add-button, .back-button {
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+  }
+
+  .add-button {
+    background-color: var(--color-accent);
+    color: var(--bg-main);
+  }
+  .add-button:hover { background-color: #0097a7; transform: translateY(-2px); }
+
+  .back-button {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  .back-button:hover { background-color: #383838; }
+
+  /* 3. تنسيق الجدول */
+  .table-container {
+    background-color: var(--bg-surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px var(--shadow-dark);
+  }
+
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th, td { padding: 18px; border-bottom: 1px solid #303030; }
+  th { 
+    background-color: var(--bg-highlight); 
+    color: var(--text-secondary); 
+    font-size: 0.95rem; 
+    
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  tbody tr:hover { background-color: #2c2c2c; }
+
+  /* 4. أزرار الإجراءات (Actions Buttons) */
+  .action-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .action-btn.view { background-color: var(--color-detail); color: var(--bg-main); }
+  .action-btn.edit { background-color: var(--color-edit); color: var(--bg-main); }
+  .action-btn.delete { background-color: var(--color-delete); color: white; }
+
+  /* --- 5. تنسيقات صفحة التفاصيل (Details View) --- */
+  .details-view {
+    padding-top: 10px;
+  }
+
+  /* بطاقة الملخص */
+  .summary-card {
+    background-color: var(--bg-surface);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px #222; /* تأثير Neumorphic خفيف */
+    border-top: 3px solid var(--color-detail);
+  }
+
+  .summary-card h3 {
+    color: var(--color-detail);
+    font-weight: 500;
+    
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+  }
+
+  .summary-card p {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+  }
+  .summary-card strong { color: var(--text-primary); }
+
+
+  /* سجل النشاطات */
+  h2 { color: var(--color-accent); margin-bottom: 25px; font-weight: 400; }
+  
+  .activity-log {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+
+  .activity-item {
+    background-color: #2c2c2c; 
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    border: 1px solid #333;
+  }
+  
+  /* تدرج لوني خفيف لتمييز البطاقة الأولى */
+  .activity-item:first-child {
+    background: linear-gradient(145deg, #262626, #2d2d2d);
+    border: 1px solid var(--color-detail);
+  }
+
+  .activity-item h4 {
+    color: var(--color-detail);
+    margin-bottom: 10px;
+    
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .activity-item p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .image-placeholder {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #1a1a1a; 
+    color: #666;
+    border: 1px dashed #444;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: monospace;
+  }
+
+  .no-activity {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    background-color: var(--bg-surface);
+    border-radius: 8px;
+  }
+
+  /* --- 6. تنسيقات النموذج المنبثق (Modal) --- */
+  .modal-backdrop {
+    /* ... (تنسيقات الخلفية المعتمة) ... */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background-color: rgba(0, 0, 0, 0.8); display: flex; 
+    justify-content: center; align-items: center; z-index: 1000;
+  }
+
+  .modal-content {
+    background-color: var(--bg-surface);
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 15px 30px var(--shadow-dark);
+  }
+
+  .form-group { margin-bottom: 20px; }
+  label { color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+
+  input, select {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--bg-highlight); 
+    color: var(--text-primary);
+    box-shadow: inset 2px 2px 5px var(--shadow-dark);
+    transition: all 0.3s;
+  }
+  input:focus, select:focus {
+    box-shadow: inset 1px 1px 3px var(--shadow-dark), 0 0 0 2px var(--color-accent);
+    background-color: #383838;
+    outline: none;
+  }
+
+  .form-actions { display: flex; justify-content: flex-end; margin-top: 30px; }
+
+  .cancel-btn, .save-btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-left: 10px;
+    box-shadow: 3px 3px 6px var(--shadow-dark);
+  }
+
+  .cancel-btn { background-color: #555; color: white; }
+  .save-btn { background-color: var(--color-accent); color: var(--bg-main); }
