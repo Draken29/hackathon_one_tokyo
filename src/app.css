@@ -1,1 +1,11 @@
 @import "tailwindcss";
+body{
+    background-color:#1f1f1f;
+    font-family:
+    "Bradley Hand",        /* متوفر على بعض أنظمة macOS/iOS */
+    "Segoe Print",         /* Windows */
+    "Lucida Handwriting",  /* Windows قديم */
+    "Apple Chancery",      /* macOS */
+    "Comic Sans MS",       /* Windows/macOS */
+    cursive;
+}
