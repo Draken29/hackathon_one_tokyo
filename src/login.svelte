@@ -4,7 +4,7 @@
   const dispatch = createEventDispatcher();
 
   // حقول النموذج
-  let email = '';
+  let name = '';
   let password = '';
   let remember = false;
   let showPassword = false;
@@ -12,37 +12,24 @@
   // حالة الواجهة
   let loading = false;
   let formError = '';
-  let emailError = '';
   let passwordError = '';
 
-  let emailInput;
-
-  // استرجاع البريد المُخزّن (اختياري)
   onMount(() => {
     const rememberedEmail = localStorage.getItem('rememberedEmail');
     if (rememberedEmail) {
-      email = rememberedEmail;
       remember = true;
     }
-    emailInput?.focus();
   });
 
-  // تحقق بسيط للمدخلات
   function validate() {
     formError = '';
-    emailError = '';
     passwordError = '';
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email || !emailRegex.test(email)) {
-      emailError = 'Please enter a valid email address.';
-    }
     if (!password || password.length < 6) {
       passwordError = 'Password must be at least 6 characters.';
     }
 
-    return !emailError && !passwordError;
+    return !passwordError;
   }
 
   async function onSubmit(e) {
@@ -53,10 +40,8 @@
     formError = '';
 
     try {
-      // هنا بدال ما نسوي mockLogin، نرسل event للأب
-      dispatch('login', { username: email, password });
-
-      // نقدر نوقف الـ loading مباشرة لأن التنقل للصفحة الثانية يصير في App
+  
+      dispatch('login', { name, password });
       loading = false;
     } catch (err) {
       formError = err?.message || 'An unexpected error occurred.';
@@ -65,7 +50,7 @@
   }
 </script>
 
-<main class="page" dir="rtl">
+<main class="page" dir="ltr">
   <form class="login-card" on:submit|preventDefault={onSubmit} novalidate>
     <h1 class="title">Log In</h1>
 
@@ -73,22 +58,21 @@
       <div class="alert" role="alert">{formError}</div>
     {/if}
 
+    <!-- حقل الاسم (Username) -->
     <div class="field">
-      <label for="email">Username</label>
+      <label for="name">Username</label>
       <input
-        bind:this={emailInput}
-        id="email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-        bind:value={email}
-        aria-invalid={emailError ? 'true' : 'false'}
-        aria-describedby={emailError ? 'email-error' : undefined}
+        id="name"
+        name="name"
+        type="text"
+        placeholder="your name"
+        bind:value={name}
+        class="name-input"
         required
       />
-      {#if emailError}<p id="email-error" class="error">{emailError}</p>{/if}
     </div>
 
+    <!-- حقل الباسورد فقط -->
     <div class="field">
       <label for="password">Password</label>
       <div class="password-row">
@@ -113,24 +97,16 @@
       </div>
       {#if passwordError}<p id="password-error" class="error">{passwordError}</p>{/if}
     </div>
-
-    <div class="row">
-      <a class="link" href="#" on:click|preventDefault={() => alert('Contact support to reset')}>
-       ? Forgot password
-      </a>
-    </div>
+<br><br>
 
     <button class="primary-btn" type="submit" disabled={loading}>
       {#if loading}
         <span class="spinner" aria-hidden="true"></span>
         Logging in…
       {:else}
-        
         Log In
       {/if}
     </button>
-
-    
   </form>
 </main>
 
@@ -166,7 +142,7 @@
   .login-card {
       left: 5%;
     top: 10%;
-    width: 90%;
+    width: 60%;
     height: auto;    /* دعي المحتوى يحدد الارتفاع */
     min-height: 60vh;
 
@@ -216,7 +192,6 @@
     color: #f5f5f5;
   }
 
-  input[type='text'],
   input[type='password'] {
     width: 100%;
     padding: 12px 12px;
@@ -227,10 +202,26 @@
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  input::placeholder {
-    color: #bdbdbd;
+
+  /* حقل الاسم يكون قصير */
+  .name-input {
+    display: inline-block;
+    width: auto;
+    max-width: 200px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: #1b1b1b;
+    color: #f3f3f3;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  input:focus {
+
+  .name-input::placeholder {
+    color: #888888;
+  }
+
+  .name-input:focus {
     border-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
   }

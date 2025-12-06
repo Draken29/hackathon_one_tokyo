@@ -7,8 +7,10 @@
   let activePage = "login"; // نبدأ بصفحة تسجيل الدخول
   let isAdmin = false;
 
-  function login(username, password) {
-    if (username === "maryam@gmail.com" && password === "111111") {
+  // اجعل الدالة تستقبل نفس القيم اللي يرسلها الـ Login component
+  function login(name, email, password) {
+    // استخدم name + password فقط للتحقق
+    if (name === "maryam" && password === "111111") {
       isAdmin = true;
     } else {
       isAdmin = false;
@@ -34,11 +36,6 @@
     }
   }
 
-  function logout(e) {
-    e.preventDefault();
-    isAdmin = false;
-    activePage = "login"; // رجوع لصفحة تسجيل الدخول
-  }
 </script>
 
 <main>
@@ -65,17 +62,16 @@
             </a>
           </li>
         {/if}
-
-        <li>
-          <a href="#logout" class="hover:text-gray-300" on:click={logout}>
-            logout
-          </a>
-        </li>
       </ul>
     </nav>
 
     {#if activePage === "login"}
-      <Login on:login={event => login(event.detail.username, event.detail.password)} />
+      <Login
+        on:login={event =>
+          // انتبه لترتيب القيم: لازم يطابق تعريف login(name, email, password)
+          login(event.detail.name, event.detail.email, event.detail.password)
+        }
+      />
     {:else if activePage === "dashboard"}
       <Dashboard/>
     {:else if activePage === "uploaded"}
