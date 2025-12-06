@@ -14,6 +14,9 @@
   let formError = '';
   let passwordError = '';
 
+  // ممكن تخزن نتيجة الlogin هنا (token أو user) إذا احتجتها لاحقاً
+  let authData = null;
+
   onMount(() => {
     const rememberedEmail = localStorage.getItem('rememberedEmail');
     if (rememberedEmail) {
@@ -22,14 +25,11 @@
   });
 
   function validate() {
+    // فقط نفضّي الأخطاء، بدون شرط طول الباسورد
     formError = '';
     passwordError = '';
 
-    if (!password || password.length < 6) {
-      passwordError = 'Password must be at least 6 characters.';
-    }
-
-    return !passwordError;
+    return true;
   }
 
   async function onSubmit(e) {
@@ -40,10 +40,57 @@
     formError = '';
 
     try {
-  
-      dispatch('login', { name, password });
+      const res = await fetch('https://uri-pharmacies-acc-hero.trycloudflare.com/api/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // هنا غيّرنا name إلى username لأن أغلب APIs تستخدم هذا الاسم
+          username: name,
+          password: password
+        })
+      });
+
+      const data = await res.json().catch(() => null);
+
+      console.log('login status', res.status);
+      console.log('login response', data);
+
+      if (!res.ok) {
+        // نحاول نقرأ رسالة خطأ من السيرفر إذا موجودة
+        formError =
+          data?.message ||
+          data?.detail ||
+          data?.error ||
+          data?.non_field_errors?.[0] ||
+          'Invalid username or password.';
+        loading = false;
+        return;
+      }
+
+      authData = data;
+
+      // استخرج التوكن من استجابة الـ API (عدّلي الأسماء إذا مختلفة)
+      const token = data?.token || data?.access || null;
+      const isAdminFromApi = data?.is_admin ?? data?.isAdmin ?? false;
+
+      // خزّني التوكن إذا حابة
+      if (token) {
+        localStorage.setItem('authToken', token);
+      }
+
+      // هذا الحدث يحمل التوكن إلى App.svelte (ومنها إلى Uploaded.svelte)
+      dispatch('login', {
+        name,
+        token,
+        isAdmin: isAdminFromApi,
+        raw: data
+      });
+
       loading = false;
     } catch (err) {
+      console.error('login error', err);
       formError = err?.message || 'An unexpected error occurred.';
       loading = false;
     }

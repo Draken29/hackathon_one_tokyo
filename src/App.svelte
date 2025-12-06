@@ -6,15 +6,29 @@
 
   let activePage = "login"; // نبدأ بصفحة تسجيل الدخول
   let isAdmin = false;
+  let authToken = null; // التوكن المستخدم في الرفع
 
-  // اجعل الدالة تستقبل نفس القيم اللي يرسلها الـ Login component
-  function login(name, email, password) {
-    // استخدم name + password فقط للتحقق
-    if (name === "maryam" && password === "111111") {
+  // الدالة تستقبل detail كامل من الـ Login
+  function login(detail) {
+    const { name, token, isAdmin: isAdminFromApi, raw } = detail || {};
+
+    // إذا الـ API يرجّع isAdmin / is_admin نستخدمه
+    // وإذا ما يرجّع، نخلي baraa / baraa أدمن كحالة خاصة (fallback)
+    if (isAdminFromApi === true) {
+      isAdmin = true;
+    } else if (name === "baraa") {
+      // ملاحظة: هنا تعتمدين على الاسم فقط لأن الـ password ما عاد يُرسل من Login
       isAdmin = true;
     } else {
       isAdmin = false;
     }
+
+    // خزّن التوكن في المتغير المحلي + localStorage إذا موجود
+    authToken = token || null;
+    if (token) {
+      localStorage.setItem("authToken", token);
+    }
+
     // بعد تسجيل الدخول نذهب لصفحة Uploaded
     activePage = "uploaded";
   }
@@ -43,39 +57,39 @@
     <nav id="nav-container" class="navbar fixed top-0 left-0 w-full z-50  backdrop-blur-md text-white px-10 py-4 flex justify-between items-center">
       <div class="text-2xl font-bold ">Tokyo</div>
 
-      <ul class="flex gap-8 text-lg">
-        <li>
-          <a href="#home" class="hover:text-gray-300" on:click={openUpload}>
-            Upload Image
-          </a>
-        </li>
-        <li>
-          <a href="#dashboard" class="hover:text-gray-300" on:click={openDashboard}>
-            Dashboard
-          </a>
-        </li>
-
-        {#if isAdmin}
+      {#if activePage !== "login"}
+        <ul class="flex gap-8 text-lg">
           <li>
-            <a href="#admin" class="hover:text-gray-300" on:click={admine}>
-              admine
+            <a href="#home" class="hover:text-gray-300" on:click={openUpload}>
+              Upload Image
             </a>
           </li>
-        {/if}
-      </ul>
+          <li>
+            <a href="#dashboard" class="hover:text-gray-300" on:click={openDashboard}>
+              Dashboard
+            </a>
+          </li>
+
+          {#if isAdmin}
+            <li>
+              <a href="#admin" class="hover:text-gray-300" on:click={admine}>
+                admin
+              </a>
+            </li>
+          {/if}
+        </ul>
+      {/if}
     </nav>
 
     {#if activePage === "login"}
       <Login
-        on:login={event =>
-          // انتبه لترتيب القيم: لازم يطابق تعريف login(name, email, password)
-          login(event.detail.name, event.detail.email, event.detail.password)
-        }
+        on:login={event => login(event.detail)}
       />
     {:else if activePage === "dashboard"}
       <Dashboard/>
     {:else if activePage === "uploaded"}
-      <Uploaded/>
+      <!-- هنا نرسل التوكن إلى صفحة الرفع -->
+      <Uploaded token={authToken} />
     {:else if activePage === "admin" && isAdmin}
       <Admin/>
     {/if}
